@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  interviews:
+    container_name: interview-app
+    build:
+      context: ./
+      dockerfile: build/interview/Dockerfile
+    env_file: .env
+    stdin_open: true
+    privileged: true
+    ports:
+      - "8000:8000"
+    tty: true
+    environment:
+      - PULSE_SERVER=unix:/mnt/wslg/PulseServer
+    volumes:
+      - ./data/interview:/app/interview
+      - /mnt/wslg:/mnt/wslg
+    command: ["python", "interview/main.py"]
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    networks:
+      - interview-network
+
+networks:
+  interview-network:
+    driver: bridge
