@@ -6,3 +6,5 @@ pydantic-settings==2.1.0
 openai-whisper==20231117
 torch
 python-multipart
+Jinja2
+MarkupSafe
